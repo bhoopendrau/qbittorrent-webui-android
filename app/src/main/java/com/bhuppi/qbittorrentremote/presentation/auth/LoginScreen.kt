@@ -1,3 +1,4 @@
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.bhuppi.qbittorrentremote.presentation.Router
 import com.bhuppi.qbittorrentremote.presentation.auth.LoginViewModel
 
 @Composable
@@ -45,7 +47,8 @@ fun LoginScreen (
         }
 
         if (state.success != null) {
-            navController.navigate("")
+            Log.i("SOME", "login successful")
+            navController.navigate(route = Router.TorrentList.route)
         }
     }
 }

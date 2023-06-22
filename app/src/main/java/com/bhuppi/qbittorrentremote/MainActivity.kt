@@ -14,7 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.bhuppi.qbittorrentremote.presentation.Router
+import com.bhuppi.qbittorrentremote.presentation.torrent_list.TorrentListScreen
 import com.bhuppi.qbittorrentremote.ui.theme.QbittorrentRemoteClientTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,14 +27,24 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             QbittorrentRemoteClientTheme {
-                val navController = rememberNavController();
-//                NavHost(
-//                    navController = navController,
-//                    graph = NavGraph()
-//                )
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    LoginScreen(navController = navController)
+                    val navController = rememberNavController();
+                    NavHost(
+                        navController = navController,
+                        startDestination = Router.LoginScreen.route
+                    ) {
+                        composable(
+                            route = Router.LoginScreen.route
+                        ) {
+                            LoginScreen(navController)
+                        }
+                        composable(
+                            route = Router.TorrentList.route
+                        ) {
+                            TorrentListScreen(navController)
+                        }
+                    }
                 }
             }
         }

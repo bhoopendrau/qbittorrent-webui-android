@@ -4,6 +4,6 @@ import com.bhuppi.qbittorrentremote.domain.model.Torrent
 
 data class TorrentListState (
     val isLoading: Boolean = false,
-    val data: List<Torrent>? = null,
+    val data: List<Torrent> = ArrayList(),
     val errorMessage: String = ""
 )
