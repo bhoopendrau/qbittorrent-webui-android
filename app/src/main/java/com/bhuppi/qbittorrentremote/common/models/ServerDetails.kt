@@ -2,6 +2,6 @@ package com.bhuppi.qbittorrentremote.common.models
 
 data class ServerDetails(
     val baseUrl: String,
-    val port: Int,
-    val user: User
+    val username: String,
+    val password: String
 )
