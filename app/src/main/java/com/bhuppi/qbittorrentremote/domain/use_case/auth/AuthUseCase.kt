@@ -19,9 +19,14 @@ class AuthUseCase @Inject constructor(
             val result = repository.login(User("bhuppi", "18120120229"))
             emit(Resource.Success(result))
         } catch (e: HttpException) {
-            Log.e("Some", "Error httpException")
+            Log.e("Some", "Error httpException", e)
+            emit(Resource.Error("Login failed: ${e.message()}"))
         } catch (e: IOException) {
-            Log.e("Some", "Error httpException")
+            Log.e("Some", "Network error", e)
+            emit(Resource.Error("Network error: ${e.message}"))
+        } catch (e: Exception) {
+            Log.e("Some", "Unexpected login error", e)
+            emit(Resource.Error(e.localizedMessage ?: "Unexpected error"))
         }
     }
 }
