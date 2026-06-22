@@ -13,3 +13,11 @@
 .externalNativeBuild
 .cxx
 local.properties
+# Additional common ignores
+.idea/
+/.gradle/
+/app/build/
+*.log
+*~
+*.swp
+.vscode/
