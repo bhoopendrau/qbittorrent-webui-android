@@ -3,15 +3,19 @@ package com.bhuppi.qbittorrentremote.di
 import android.content.Context
 import com.bhuppi.qbittorrentremote.common.preferences.LocalDataProvider
 import com.bhuppi.qbittorrentremote.common.preferences.LocalDataProviderImpl
+import com.bhuppi.qbittorrentremote.data.remote.api.ApplicationApi
 import com.bhuppi.qbittorrentremote.data.remote.api.AuthApi
 import com.bhuppi.qbittorrentremote.data.remote.api.TorrentsApi
+import com.bhuppi.qbittorrentremote.data.remote.api.TransferApi
 import com.bhuppi.qbittorrentremote.data.remote.api.intercepters.AddCookiesInterceptor
 import com.bhuppi.qbittorrentremote.data.remote.api.intercepters.BaseUrlInterceptor
 import com.bhuppi.qbittorrentremote.data.remote.api.intercepters.ReceivedCookiesInterceptor
 import com.bhuppi.qbittorrentremote.data.repository.AuthRepositoryImpl
 import com.bhuppi.qbittorrentremote.data.repository.TorrentsRepositoryImpl
+import com.bhuppi.qbittorrentremote.data.repository.TransferRepositoryImpl
 import com.bhuppi.qbittorrentremote.domain.repository.AuthRepository
 import com.bhuppi.qbittorrentremote.domain.repository.TorrentsRepository
+import com.bhuppi.qbittorrentremote.domain.repository.TransferRepository
 import com.bhuppi.qbittorrentremote.domain.use_case.auth.AuthUseCase
 import com.bhuppi.qbittorrentremote.domain.use_case.torrents.AddTorrentUseCase
 import com.bhuppi.qbittorrentremote.domain.use_case.torrents.DeleteTorrentsUseCase
@@ -34,6 +38,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
+    // Infrastructure
     @Provides
     @Singleton
     fun providesLocalDataProvider(@ApplicationContext context: Context): LocalDataProvider {
@@ -88,24 +93,37 @@ class AppModule {
             .build()
     }
 
+    // API interfaces
     @Provides
     @Singleton
-    fun providesAuthApi(retrofit: Retrofit): AuthApi {
-        return retrofit.create(AuthApi::class.java)
-    }
+    fun providesAuthApi(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
 
     @Provides
     @Singleton
-    fun providesTorrentsApi(retrofit: Retrofit): TorrentsApi {
-        return retrofit.create(TorrentsApi::class.java)
-    }
+    fun providesTorrentsApi(retrofit: Retrofit): TorrentsApi = retrofit.create(TorrentsApi::class.java)
 
     @Provides
     @Singleton
-    fun providesAuthRepository(authApi: AuthApi): AuthRepository {
-        return AuthRepositoryImpl(authApi)
-    }
+    fun providesTransferApi(retrofit: Retrofit): TransferApi = retrofit.create(TransferApi::class.java)
 
+    @Provides
+    @Singleton
+    fun providesApplicationApi(retrofit: Retrofit): ApplicationApi = retrofit.create(ApplicationApi::class.java)
+
+    // Repositories
+    @Provides
+    @Singleton
+    fun providesAuthRepository(authApi: AuthApi): AuthRepository = AuthRepositoryImpl(authApi)
+
+    @Provides
+    @Singleton
+    fun providesTorrentsRepository(api: TorrentsApi): TorrentsRepository = TorrentsRepositoryImpl(api)
+
+    @Provides
+    @Singleton
+    fun providesTransferRepository(api: TransferApi): TransferRepository = TransferRepositoryImpl(api)
+
+    // Use cases
     @Provides
     @Singleton
     fun providesAuthUseCase(authRepository: AuthRepository, localDataProvider: LocalDataProvider): AuthUseCase {
@@ -114,37 +132,21 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providesTorrentsRepository(api: TorrentsApi): TorrentsRepository {
-        return TorrentsRepositoryImpl(api)
-    }
+    fun providesTorrentsUseCase(repository: TorrentsRepository): TorrentsUseCase = TorrentsUseCase(repository)
 
     @Provides
     @Singleton
-    fun providesTorrentsUseCase(repository: TorrentsRepository): TorrentsUseCase {
-        return TorrentsUseCase(repository)
-    }
+    fun providesPauseTorrentsUseCase(repository: TorrentsRepository): PauseTorrentsUseCase = PauseTorrentsUseCase(repository)
 
     @Provides
     @Singleton
-    fun providesPauseTorrentsUseCase(repository: TorrentsRepository): PauseTorrentsUseCase {
-        return PauseTorrentsUseCase(repository)
-    }
+    fun providesResumeTorrentsUseCase(repository: TorrentsRepository): ResumeTorrentsUseCase = ResumeTorrentsUseCase(repository)
 
     @Provides
     @Singleton
-    fun providesResumeTorrentsUseCase(repository: TorrentsRepository): ResumeTorrentsUseCase {
-        return ResumeTorrentsUseCase(repository)
-    }
+    fun providesDeleteTorrentsUseCase(repository: TorrentsRepository): DeleteTorrentsUseCase = DeleteTorrentsUseCase(repository)
 
     @Provides
     @Singleton
-    fun providesDeleteTorrentsUseCase(repository: TorrentsRepository): DeleteTorrentsUseCase {
-        return DeleteTorrentsUseCase(repository)
-    }
-
-    @Provides
-    @Singleton
-    fun providesAddTorrentUseCase(repository: TorrentsRepository): AddTorrentUseCase {
-        return AddTorrentUseCase(repository)
-    }
+    fun providesAddTorrentUseCase(repository: TorrentsRepository): AddTorrentUseCase = AddTorrentUseCase(repository)
 }

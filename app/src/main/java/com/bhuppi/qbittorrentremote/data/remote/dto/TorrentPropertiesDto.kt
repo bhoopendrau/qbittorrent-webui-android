@@ -1,0 +1,78 @@
+package com.bhuppi.qbittorrentremote.data.remote.dto
+
+import com.bhuppi.qbittorrentremote.domain.model.TorrentProperties
+import com.google.gson.annotations.SerializedName
+
+data class TorrentPropertiesDto(
+    @SerializedName("save_path") val savePath: String = "",
+    @SerializedName("creation_date") val creationDate: Long = 0,
+    @SerializedName("piece_size") val pieceSize: Long = 0,
+    val comment: String = "",
+    @SerializedName("total_wasted") val totalWasted: Long = 0,
+    @SerializedName("total_uploaded") val totalUploaded: Long = 0,
+    @SerializedName("total_uploaded_session") val totalUploadedSession: Long = 0,
+    @SerializedName("total_downloaded") val totalDownloaded: Long = 0,
+    @SerializedName("total_downloaded_session") val totalDownloadedSession: Long = 0,
+    @SerializedName("up_limit") val upLimit: Long = 0,
+    @SerializedName("dl_limit") val dlLimit: Long = 0,
+    @SerializedName("time_elapsed") val timeElapsed: Long = 0,
+    @SerializedName("seeding_time") val seedingTime: Long = 0,
+    @SerializedName("nb_connections") val nbConnections: Int = 0,
+    @SerializedName("nb_connections_limit") val nbConnectionsLimit: Int = 0,
+    @SerializedName("share_ratio") val shareRatio: Double = 0.0,
+    @SerializedName("addition_date") val additionDate: Long = 0,
+    @SerializedName("completion_date") val completionDate: Long = 0,
+    @SerializedName("created_by") val createdBy: String = "",
+    @SerializedName("dl_speed_avg") val dlSpeedAvg: Long = 0,
+    @SerializedName("dl_speed") val dlSpeed: Long = 0,
+    val eta: Long = 0,
+    @SerializedName("last_seen") val lastSeen: Long = 0,
+    val peers: Int = 0,
+    @SerializedName("peers_total") val peersTotal: Int = 0,
+    @SerializedName("pieces_have") val piecesHave: Int = 0,
+    @SerializedName("pieces_num") val piecesNum: Int = 0,
+    val reannounce: Long = 0,
+    val seeds: Int = 0,
+    @SerializedName("seeds_total") val seedsTotal: Int = 0,
+    @SerializedName("total_size") val totalSize: Long = 0,
+    @SerializedName("up_speed_avg") val upSpeedAvg: Long = 0,
+    @SerializedName("up_speed") val upSpeed: Long = 0
+)
+
+fun TorrentPropertiesDto.toTorrentProperties(): TorrentProperties {
+    return TorrentProperties(
+        savePath = savePath,
+        creationDate = creationDate,
+        pieceSize = pieceSize,
+        comment = comment,
+        totalWasted = totalWasted,
+        totalUploaded = totalUploaded,
+        totalUploadedSession = totalUploadedSession,
+        totalDownloaded = totalDownloaded,
+        totalDownloadedSession = totalDownloadedSession,
+        upLimit = upLimit,
+        dlLimit = dlLimit,
+        timeElapsed = timeElapsed,
+        seedingTime = seedingTime,
+        nbConnections = nbConnections,
+        nbConnectionsLimit = nbConnectionsLimit,
+        shareRatio = shareRatio,
+        additionDate = additionDate,
+        completionDate = completionDate,
+        createdBy = createdBy,
+        dlSpeedAvg = dlSpeedAvg,
+        dlSpeed = dlSpeed,
+        eta = eta,
+        lastSeen = lastSeen,
+        peers = peers,
+        peersTotal = peersTotal,
+        piecesHave = piecesHave,
+        piecesNum = piecesNum,
+        reannounce = reannounce,
+        seeds = seeds,
+        seedsTotal = seedsTotal,
+        totalSize = totalSize,
+        upSpeedAvg = upSpeedAvg,
+        upSpeed = upSpeed
+    )
+}

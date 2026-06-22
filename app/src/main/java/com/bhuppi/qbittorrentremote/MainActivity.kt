@@ -7,12 +7,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.bhuppi.qbittorrentremote.presentation.Router
 import com.bhuppi.qbittorrentremote.presentation.add_torrent.AddTorrentScreen
 import com.bhuppi.qbittorrentremote.presentation.auth.LoginScreen
+import com.bhuppi.qbittorrentremote.presentation.settings.SettingsScreen
+import com.bhuppi.qbittorrentremote.presentation.torrent_detail.TorrentDetailScreen
 import com.bhuppi.qbittorrentremote.presentation.torrent_list.TorrentListScreen
 import com.bhuppi.qbittorrentremote.ui.theme.QbittorrentRemoteClientTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,6 +41,15 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(route = Router.AddTorrent.route) {
                             AddTorrentScreen(navController)
+                        }
+                        composable(
+                            route = Router.TorrentDetail.route,
+                            arguments = listOf(navArgument("hash") { type = NavType.StringType })
+                        ) {
+                            TorrentDetailScreen(navController)
+                        }
+                        composable(route = Router.Settings.route) {
+                            SettingsScreen(navController)
                         }
                     }
                 }

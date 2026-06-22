@@ -42,7 +42,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.bhuppi.qbittorrentremote.common.utils.mapTorrentState
 import com.bhuppi.qbittorrentremote.presentation.Router
 import com.bhuppi.qbittorrentremote.presentation.torrent_list.components.TorrentFilterBar
 import com.bhuppi.qbittorrentremote.presentation.torrent_list.components.TorrentListItem
@@ -96,6 +95,13 @@ fun TorrentListScreen(
                             expanded = showMenu,
                             onDismissRequest = { showMenu = false }
                         ) {
+                            DropdownMenuItem(
+                                text = { Text("Settings") },
+                                onClick = {
+                                    showMenu = false
+                                    navController.navigate(Router.Settings.route)
+                                }
+                            )
                             DropdownMenuItem(
                                 text = { Text("Logout") },
                                 onClick = {
@@ -169,7 +175,6 @@ fun TorrentListScreen(
 
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(state.data, key = { it.hash }) { torrent ->
-                        val stateInfo = mapTorrentState(torrent.state)
                         TorrentListItem(
                             torrent = torrent,
                             isSelected = state.selectedHashes.contains(torrent.hash),
@@ -177,11 +182,7 @@ fun TorrentListScreen(
                                 if (state.isMultiSelectMode) {
                                     viewModel.toggleSelection(torrent.hash)
                                 } else {
-                                    if (stateInfo.canPause) {
-                                        viewModel.pauseSingle(torrent.hash)
-                                    } else if (stateInfo.canResume) {
-                                        viewModel.resumeSingle(torrent.hash)
-                                    }
+                                    navController.navigate(Router.TorrentDetail.createRoute(torrent.hash))
                                 }
                             },
                             onLongClick = {
